@@ -1,0 +1,5 @@
+
+
+echo "name"
+read fname
+echo "Hello,$fname "
