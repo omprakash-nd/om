@@ -32,7 +32,7 @@ class checkHTML:
         
     def display(self):
         try:
-            choice = int(raw_input('1 for tags , 2 for attributes , 3 for attribute values 4\n Enter number:'))
+            choice = int(raw_input('1 for tags , 2 for attributes , 3 for attribute values 4 for search attribute value \n Enter number:'))
             if choice==1:
                 for i in self.tags:
                     print i
@@ -44,39 +44,23 @@ class checkHTML:
                 self.display()
                    
             elif choice==3:
-                for i in self.attrval:
-                    print i
+                for x,y in map(None,self.attrb,self.attrval):
+                    print "%s = %s"%(x,y)
                 self.display()
                 
             elif choice == 4:
                 att=str(raw_input('enter attribe ='))
                 if att in self.attrb:
                     i=self.attrb.index(att)
-                    print i
-                    print self.attrval[i]
+                    print "Attribute value:"self.attrval[i]
                 else:
                     print "Values doesn't match"
                     self.display()
-                
             else:
                 print "Enter correct number"
                 self.display()
         except:
-            print "Errors Occured.. Tryagain.", 
-            
-
-    def check():
-        ans=raw_input("Do you want to do continue..(y/n)\n").lower()
-        if ans=='y':
-            self.display()
-        elif ans=='n':
-            print ("Thank you for using PostBank we value you. Have a good day")
-            time.sleep(1)
-            exit()
-        elif ans!='y' and ans!='n':
-            print "Unknown key pressed, please choose either 'N' or 'Y'"
-            self.check()
-
+            print "Wrong Key pressed..Try again.."
             
 html = checkHTML()
 html.get()
