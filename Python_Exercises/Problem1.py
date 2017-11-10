@@ -3,81 +3,68 @@ import os,re
 
 script, input_file = argv
 
-class checkHTML:
+class CheckHTML:
 
-    def input_check(self,input_file):
-        isSuccess = False
+    def get_FileName(self,filename):
         try:
-            filename = input_file
-            self.get_FileName(filename)
+            if '.html' in filename or '.txt' in filename:
+                print os.stat(filename).st_size
+                if os.stat(filename).st_size != 0:
+                    current_file = open(filename)
+                    self.file_name = filename
+                    fileRead = current_file.read()
+                    self.reading = fileRead
+                else:
+                    print "%s is empty file" %self.file_name
+            else:
+                print'%s does not exist in current directory' %self.file_name           
         except IndexError:
             print 'You failed to provide filename as input on the command line!'
-            isSuccess = True
-            return isSuccess
-    
-    def get_FileName(self,fname):
-        isSuccess = False
-        try:
-            file_name = fname
-            if '.html' in file_name or '.txt' in file_name:
-                current_file = open(file_name)
-                if os.stat(file_name).st_size != 0:
-                    self.fileRead = current_file.read()
-                    self.check_Tags()
-                else:
-                    print "%s is empty file" %file_name
-            else:
-                print'%s does not exist in current directory' %file_name
-            isSuccess = True            
-        except (RuntimeError, TypeError, NameError):
-            print 'You failed to provide filename as input on the command line!'
-            isSuccess = True
-            return isSuccess
+        return filename
+
+    def test(self):
+        self.message = 'Hello world'
 
     def check_Tags(self):
-        isSuccess = False
         try:
             self.HtmlTags=[]
             self.HtmlAttributes=[]
             self.HtmlAttributeValues=[]
-            texts = re.sub(r'<!.+-->',r' ',(self.fileRead))
-            self.check_Attributes()
-            #print texts
-            return texts
-        except (RuntimeError, TypeError, NameError):
-            isSuccess = True
-            return isSuccess
+            remove_params = re.sub(r'<!.+-->',r' ',self.reading)
+            self.texts = remove_params
+        except :
+           pass
+        return remove_params 
 
-    def check_Attributes(self, ):
-        isSuccess = False  
+    def check_Attributes(self):
         try:
-            text = self.check_Tags()
-            #print text
-            for tags in re.findall(r'<([^/][^>]*)>',text):
+            for tags in re.findall(r'<([^/][^>]*)>',self.texts):
                 if ' ' in tags:
                     for attribute in re.findall('([a-z]+)? *([a-z-]+)="([^"]+)',tags):
                         self.HtmlTags.append(attribute[0])
-                        #print attribute[0]
                         self.HtmlAttributes.append(attribute[1])
                         self.HtmlAttributeValues.append(attribute[2])
                     self.display()
                 else:
-                    self.HtmlTags.append(tags)        
-            self.HtmlTags =filter(None, self.HtmlTags)
-            isSuccess = True
-            return tags
-        except(RuntimeError, TypeError, NameError):
+                    self.HtmlTags.append(tags)
+            self.HtmlTags =filter(None, self.HtmlTags)   
+        except:
             pass
-            isSuccess = False  
-            return isSuccess
-            
+        return tags
+    
     def display(self):
-        isSuccess = False
+        isSuccess = True
         try:
-            choice = int(raw_input('1 for tags , 2 for attributes , 3 for attribute values 4 for search attribute value 5.exit \n Enter number:'))
+            choice = int(raw_input("""
+1 for tags,
+2 for attributes,
+3 for attribute values,
+4 for search attribute value,
+5.exit
+Enter number:"""))
             if choice == 1:
-                for tag in self.HtmlTags:
-                    print tag
+                for tagg in self.HtmlTags:
+                    print tagg
                 self.display()
                     
             elif choice == 2:
@@ -97,17 +84,21 @@ class checkHTML:
                     print "Attribute value:",self.HtmlAttributeValues[index_value]
                 else:
                     print "Values doesn't match"
-                    self.display()
+                self.display()
             elif choice == 5:
-                exit()
-                
+                sys.exit(0)
             else:
                 print "Enter correct number"
-                self.display()
-                isSuccess = True  
-        except (RuntimeError, TypeError, NameError):
-            pass 
-            return isSuccess    
+                self.display() 
+        except:
+            isSuccess = False
+            print 'Your process error occured..'
+            sys.exit(0)
+        return isSuccess
 
-html = checkHTML()
-html.input_check(input_file)  
+
+html = CheckHTML()
+print html.get_FileName("sample.txt")
+##html.check_Tags()
+##html.check_Attributes()
+##html.display()
