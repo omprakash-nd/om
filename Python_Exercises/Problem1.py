@@ -1,104 +1,96 @@
-from sys import argv
+import sys
 import os,re
 
-script, input_file = argv
-
-class CheckHTML:
+class CheckHTML():
 
     def get_FileName(self,filename):
         try:
             if '.html' in filename or '.txt' in filename:
-                print os.stat(filename).st_size
                 if os.stat(filename).st_size != 0:
                     current_file = open(filename)
                     self.file_name = filename
                     fileRead = current_file.read()
                     self.reading = fileRead
                 else:
-                    print "%s is empty file" %self.file_name
+                    print '%s is empty file' %filename
             else:
-                print'%s does not exist in current directory' %self.file_name           
+                print'%s does not exist in current directory' %filename
         except IndexError:
             print 'You failed to provide filename as input on the command line!'
         return filename
 
-    def test(self):
-        self.message = 'Hello world'
-
-    def check_Tags(self):
-        try:
-            self.HtmlTags=[]
-            self.HtmlAttributes=[]
-            self.HtmlAttributeValues=[]
-            remove_params = re.sub(r'<!.+-->',r' ',self.reading)
-            self.texts = remove_params
-        except :
-           pass
-        return remove_params 
-
     def check_Attributes(self):
         try:
+            remove_params = re.sub(r'<!.+-->',r' ',self.reading)
+            self.texts = remove_params
+            
             for tags in re.findall(r'<([^/][^>]*)>',self.texts):
                 if ' ' in tags:
                     for attribute in re.findall('([a-z]+)? *([a-z-]+)="([^"]+)',tags):
-                        self.HtmlTags.append(attribute[0])
-                        self.HtmlAttributes.append(attribute[1])
-                        self.HtmlAttributeValues.append(attribute[2])
-                    self.display()
+                        HtmlTags.append(attribute[0])
+                        self.htmltags = HtmlTags
+                        HtmlAttributes.append(attribute[1])
+                        self.htmlAttributes = HtmlAttributes
+                        HtmlAttributeValues.append(attribute[2])
+                        self.htmlAttributeValues = HtmlAttributeValues
                 else:
-                    self.HtmlTags.append(tags)
-            self.HtmlTags =filter(None, self.HtmlTags)   
+                    HtmlTags.append(tags)
+            HtmlTags =filter(None, HtmlTags)
+
         except:
             pass
-        return tags
-    
+        return HtmlTags
+
     def display(self):
         isSuccess = True
         try:
             choice = int(raw_input("""
-1 for tags,
-2 for attributes,
-3 for attribute values,
-4 for search attribute value,
-5.exit
-Enter number:"""))
+    1 for tags,
+    2 for attributes,
+    3 for attribute values,
+    4 for search attribute value,
+    5.exit
+    Enter number:"""))
             if choice == 1:
-                for tagg in self.HtmlTags:
+                for tagg in self.htmltags:
                     print tagg
                 self.display()
-                    
+
             elif choice == 2:
-                for attrib in self.HtmlAttributes:
+                for attrib in self.htmlAttributes:
                     print attrib
                 self.display()
-                   
+
             elif choice == 3:
-                for attrib,values in map(None,self.HtmlAttributes,self.HtmlAttributeValues):
+                for attrib,values in map(None, self.htmlAttributes,self.htmlAttributeValues):
                     print "%s = %s"%(attrib,values)
                 self.display()
-                
+
             elif choice == 4:
-                attrib=str(raw_input('enter attribe ='))
-                if attrib in self.HtmlAttributes:
-                    index_value=self.HtmlAttributes.index(attrib)
-                    print "Attribute value:",self.HtmlAttributeValues[index_value]
+                attrib = str(raw_input('enter attribe ='))
+                if attrib in self.htmlAttributes:
+                    index_value = self.htmlAttributes.index(attrib)
+                    print "Attribute value:",self.htmlAttributeValues[index_value]
                 else:
                     print "Values doesn't match"
                 self.display()
             elif choice == 5:
-                sys.exit(0)
+                sys.exit()
             else:
                 print "Enter correct number"
-                self.display() 
-        except:
+                self.display()
+        except Exception as exception:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(exception).__name__, exception.args)
+            print message
             isSuccess = False
-            print 'Your process error occured..'
-            sys.exit(0)
+            pass
         return isSuccess
+        
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        html = CheckHTML()
+        html.get_FileName(sys.argv[1])
+        html.check_Attributes()
+        html.display()
 
-
-html = CheckHTML()
-print html.get_FileName("sample.txt")
-##html.check_Tags()
-##html.check_Attributes()
-##html.display()
