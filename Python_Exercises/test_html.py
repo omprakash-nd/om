@@ -1,5 +1,5 @@
 import unittest
-from Problem1 import CheckHTML
+from HtmlTagDetect import CheckHTML
 
 class TestHtmlTags(unittest.TestCase):
 
