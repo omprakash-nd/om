@@ -1,0 +1,16 @@
+Depature,DepatureTime,Arrival,ArrivalTime
+chennai,700,madurai,1420
+chennai,1115,madurai,1800
+chennai,1950,madurai,620
+chennai,2000,madurai,720
+chennai,2100,madurai,720
+chennai,2215,madurai,800
+chennai,10,madurai,1930
+madurai,615,chennai,1300
+madurai,800,chennai,1500
+madurai,720,Trichy,1000
+Trichy,615,madurai,800
+madurai,1200,trichy,1500
+madurai,2000,chennai,700
+madurai,615,kovai,1150
+kovai,1520,chennai,2100
