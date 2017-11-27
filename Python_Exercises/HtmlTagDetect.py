@@ -115,10 +115,10 @@ class CheckHTML():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         html = CheckHTML()
-        arg1, arg2 = html.check_fileformat(sys.argv[1])
-        if arg2:
-            arg3, arg4 = html.open_file(arg1,arg2)
-        if arg4:
-            arg5,arg6 = html.check_fileAttributes(arg3,arg4)
-        if arg6:
-            html.display(arg6)
+        Filename, Result = html.check_fileformat(sys.argv[1])
+        if Result:
+            Data, Result = html.open_file(Filename,Result)
+        if Result:
+            Tags,Result = html.check_fileAttributes(Data,Result)
+        if Result:
+            html.display(Result)
