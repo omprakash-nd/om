@@ -1,37 +1,53 @@
 import sys,csv
 from collections import defaultdict
 
-class RailRoad():
-    def readFile(self):
+class Railroads():
+    def openFile(self,filename):
         try:
             isSuccess = True
-            file  = open('input.csv', "rb")
-            reader = csv.reader(file)
+            if filename.endswith('.csv'):
+                file  = open(filename)
+                reader = csv.reader(file)
+            else:
+                isSuccess = False
+                print "File format not correct"
 
-            depture =[]
-            arrival = []
-            for idx,row in enumerate(reader):
-                if idx>0:
-                    dept_det=[row[0],row[1]]
-                    depture.append(dept_det)
-
-                    arr_det=[row[2],row[3]]
-                    arrival.append(arr_det)
         except Exception as exception:
             isSuccess = False
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
             message = template.format(type(exception).__name__, exception.args)
             print message
-        return depture,arrival,isSuccess
+        return reader,isSuccess
 
-    def getPassengerInfo(self,isSuccess):
+    def readFile(self,data): 
+        try:
+            isSuccess = True
+            depture =[]
+            arrival = []
+            cities = []
+            for count,row in enumerate(data):
+                if count > 0:
+                    dept_det=[row[0],row[1]] 
+                    depture.append(dept_det)
+                    arr_det=[row[2],row[3]]
+                    arrival.append(arr_det)
+                    city = [row[0],row[2]]
+                    cities.append(city)
+        except Exception as exception:
+            isSuccess = False
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(exception).__name__, exception.args)
+            print message
+        return depture,arrival,cities,isSuccess        
+
+    def getPassengerInfo(self,cities,isSuccess):
         try:
             isSuccess = True
             passenger =[]
             passenger_start = str(raw_input("Enter passener startpoint:"))
-            if str(passenger_start):
+            if str(passenger_start == cities):
                 passenger_end = str(raw_input("Enter passener endpoint:"))
-                if str(passenger_end):
+                if str(passenger_end == cities):
                     if passenger_start == passenger_end:
                         print "Startpoint and Endpoint is same.."
                     else:
@@ -49,7 +65,6 @@ class RailRoad():
             else:
                 print "Wrong Start Point"
                 isSuccess = False
-            
         except Exception as exception:
             isSuccess = False
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -62,10 +77,10 @@ class RailRoad():
             isSuccess = True
             traindepaturelist = []
             trainarrivallist =[]
-            for i in depture:
-                traindepaturelist.append([int(check) if check.isdigit() else check for check in i])
-            for i in arrival:     
-                trainarrivallist.append([int(check) if check.isdigit() else check for check in i])
+            for count in depture:
+                traindepaturelist.append([int(check) if check.isdigit() else check for check in count])
+            for count in arrival:     
+                trainarrivallist.append([int(check) if check.isdigit() else check for check in count])
         except Exception as exception:
             isSuccess = False
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -78,14 +93,14 @@ class RailRoad():
             isSuccess = True
             destination = []
             start = []
-            j=1
-            for i in range(0,len(trainarrivallist)):
-                if trainarrivallist[i][0] == passenger[j]:
-                     destination.append(trainarrivallist[i])
+            index=1
+            for count in range(0,len(trainarrivallist)):
+                if trainarrivallist[count][0] == passenger[index]:
+                     destination.append(trainarrivallist[count])
 
-            for i in range(0,len(traindepaturelist)):
-                 if traindepaturelist[i][0] == passenger[0]:
-                     start.append(traindepaturelist[i])
+            for count in range(0,len(traindepaturelist)):
+                 if traindepaturelist[count][0] == passenger[0]:
+                     start.append(traindepaturelist[count])
 
             if len(destination) == 0 or len(start) == 0:
                 print "No Connections"
@@ -102,10 +117,10 @@ class RailRoad():
             getDest=[]
             check=""
             Dest =""
-            j=1
-            for i in range(0,len(destination)):
-                if passenger[2] == destination[i][j] or passenger[2] > destination[i][j]:
-                    getDest.append(destination[i])
+            index=1
+            for count in range(0,len(destination)):
+                if passenger[2] == destination[count][index] or passenger[2] > destination[count][index]:
+                    getDest.append(destination[count])
                     Dest=max(getDest)
                 else:
                     check = "No connection"
@@ -118,14 +133,15 @@ class RailRoad():
             print message
         return Dest,isSuccess
 
-    def Display(self,dest,trainarrivallist,traindepaturelist,isSucess):
+    def Display(self,dest,trainarrivallist,traindepaturelist,passenger,isSucess):
         try:
             isSuccess = True
             if len(dest)!=0:
-                for i in range(len(trainarrivallist)):
-                    if trainarrivallist[i] == dest:
-                        print "If You start %r clock from %r" %(traindepaturelist[i][0], traindepaturelist[i][1])
-                        print "You will reach %r on %r clock"% (trainarrivallist[i][1], trainarrivallist[i][0])
+                for count in range(len(trainarrivallist)):
+                    if trainarrivallist[count] == dest:
+                        if passenger[0] == traindepaturelist[count][0]:
+                            print "If You start %r clock from %r" %(traindepaturelist[count][1], traindepaturelist[count][0])
+                            print "You will reach %r on %r clock"% (trainarrivallist[count][0], trainarrivallist[count][1])
         except Exception as exception:
             isSuccess = False
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -134,16 +150,18 @@ class RailRoad():
         return isSuccess
 
 if __name__ == '__main__':
-    
-    Rail = RailRoad()
-    Depature,Arrival,Result = Rail.readFile()
-    if Result:
-        Passenger,Result=Rail.getPassengerInfo(Result)    
-    if Result:
-        TrainDept,TrainArrival,Result=Rail.getTrainDetails(Depature,Arrival,Result)
-    if Result:
-        Station,Result=Rail.MatchStation(TrainDept,TrainArrival,Passenger,Result)
-    if Result:
-        Destination,Result=Rail.MatchTime(Station,Passenger,Result)
-    if Result:
-        Result=Rail.Display(Destination,TrainArrival,TrainDept,Result)
+    if len(sys.argv) > 1:
+        Rail = Railroads()
+        TrainData,Result = Rail.openFile(sys.argv[1])
+        if Result:
+            Depature,Arrival,City,Result = Rail.readFile(TrainData)
+        if Result:
+            Passenger,Result=Rail.getPassengerInfo(City,Result)    
+        if Result:
+            TrainDept,TrainArrival,Result=Rail.getTrainDetails(Depature,Arrival,Result)
+        if Result:
+            Station,Result=Rail.MatchStation(TrainDept,TrainArrival,Passenger,Result)
+        if Result:
+            Destination,Result=Rail.MatchTime(Station,Passenger,Result)
+        if Result:
+            Result=Rail.Display(Destination,TrainArrival,TrainDept,Passenger,Result)
