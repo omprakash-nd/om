@@ -6,9 +6,8 @@ class CheckHTML():
     def check_fileformat(self,filename):
         isSuccess = True
         try:
-            if '.html' in filename or '.txt' in filename:
+            if filename.endswith('.html') or filename.endswith('.txt'):
                 if os.stat(filename).st_size != 0:
-                   #print "filename correct format"
                     isSuccess = True
                 else:
                     print '%s is empty file' %filename
@@ -44,7 +43,6 @@ class CheckHTML():
                 HtmlAttributeValues=[]
                 remove_params = re.sub(r'<!.+-->',r' ',filename)
                 self.texts = remove_params
-                
                 for tags in re.findall(r'<([^/][^>]*)>',self.texts):
                     if ' ' in tags:
                         for attribute in re.findall('([a-z]+)? *([a-z-]+)="([^"]+)',tags):
@@ -57,7 +55,6 @@ class CheckHTML():
                             self.htmlAttributeValues = HtmlAttributeValues
                     else:
                         HtmlTags.append(tags)
-
             except Exception as exception:
                 isSuccess = False
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -104,7 +101,6 @@ class CheckHTML():
                 else:
                     print "Enter correct number"
                     self.display(isSuccess)
-    
             except Exception as exception:
                 isSuccess = False
                 template = "An exception of type {0} occurred. Arguments:\n{1!r}"
