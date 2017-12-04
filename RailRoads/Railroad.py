@@ -3,15 +3,15 @@ from collections import defaultdict
 import sys
 
 class Railroads():
-    def readRailInfo(self):
+    def readRailInfo(self,file_name):
         try:
             isSuccess= True
             print """Hello, This application for check your train information.
 Once you check Departure and arrival stations name from your input file.\n
 User provide Departue,Arrival stations & time like 0000 to 2400\n"""
             rail = Rails()
-            if len(sys.argv)>1:
-                filename, isfile = rail.checkFile(sys.argv[1])
+            if len(file_name)>1:
+                filename, isfile = rail.checkFile(file_name)
                 if isfile:
                     reader,isRead = rail.readFile(filename,isfile)
                     if isRead:
@@ -167,7 +167,15 @@ if __name__ == "__main__":
     check="info's not correct.."
     railroad =Railroads()
     isSuccess = True
-    depts,arrivals,city,result=railroad.readRailInfo()
+    try:
+        depts,arrivals,city,result=railroad.readRailInfo(sys.argv[1])
+    except Exception as exception:
+        isSuccess = False
+        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+        message = template.format(type(exception).__name__, exception.args)
+        print message
+        exit()
+        
     if result:
         info_passenger,isPassenerInfo =railroad.getPassengerInfo(city,result)
     else:
