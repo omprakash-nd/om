@@ -1,7 +1,7 @@
 import sys
 import os,re
 
-class CheckHTML():
+class HTMLParser():
 
     def check_fileformat(self,filename):
         isSuccess = True
@@ -13,7 +13,7 @@ class CheckHTML():
                     print '%s is empty file' %filename
                     isSuccess = False
             else:
-                print'%s does not exist in current directory' %filename
+                print'%s does not exist in current format' %filename
                 isSuccess = False
         except IndexError:
             isSuccess = False
@@ -35,7 +35,7 @@ class CheckHTML():
             print message
         return fileRead,isSuccess
 
-    def check_fileAttributes(self,filename,isSuccess):
+    def check_file_attributes(self,filename,isSuccess):
         if isSuccess == True: 
             try: 
                 HtmlTags=[]
@@ -110,11 +110,27 @@ class CheckHTML():
         
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        html = CheckHTML()
-        Filename, Result = html.check_fileformat(sys.argv[1])
-        if Result:
-            Data, Result = html.open_file(Filename,Result)
-        if Result:
-            Tags,Result = html.check_fileAttributes(Data,Result)
-        if Result:
-            html.display(Result)
+        html = HTMLParser()
+        
+        Filename, isfileformat = html.check_fileformat(sys.argv[1])
+
+        if isfileformat:
+            Data, isopen = html.open_file(Filename,isfileformat)
+        else:
+            isfileformat = False
+
+        if isopen:
+            Tags,isattributes = html.check_file_attributes(Data,isopen)
+        else:
+            isopen = False
+
+        if isattributes:
+            html.display(isattributes)
+        else:
+            isattributes = False
+            
+    elif len(sys.argv) = 0:
+        print "You failed to provide filename as input on the command line!"
+    else:
+        print "You provided two more filename as input on the command line!"
+        
