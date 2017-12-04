@@ -1,0 +1,13 @@
+Trainno,Depature,DepatureTime,Arrival,ArrivalTime
+10001,chennai,700,madurai,1420
+10001,chennai,700,tambaram,730
+10001,dindugal,1200,madurai,1420
+10002,madurai,600,chennai,1400
+10002,madurai,600,dindugal,700
+10005,kovai,1200,tambaram,1810
+10005,kovai,1200,chennai,1900
+10007,chennai,1200,vilupuram,1500
+10007,chennai,1200,tiruchy,2000
+10007,tiruchy,2000,madurai,2300
+10008,madurai,600,chennai,1100
+10008,tiruchy,900,chennai,1100
