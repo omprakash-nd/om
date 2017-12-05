@@ -128,9 +128,6 @@ if __name__ == '__main__':
             html.display(isattributes)
         else:
             isattributes = False
-            
-    elif len(sys.argv) = 0:
-        print "You failed to provide filename as input on the command line!"
     else:
         print "You provided two more filename as input on the command line!"
         
