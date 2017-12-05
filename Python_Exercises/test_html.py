@@ -18,8 +18,12 @@ class TestHtmlTags(unittest.TestCase):
         self.assertIn(test_open, self.read_file) 
 
     def test_fileAttributes(self):
-        return_value = html.check_fileAttributes(self.read_file,True)[0]
-        self.assertEqual(return_value, ['head', 'title', 'object', 'param']) 
+        return_value = html.check_file_attributes(self.read_file,True)[0]
+        self.assertNotEqual(return_value, ['head', 'title', 'object', 'param'])
+
+    def test_fileAttributesValues(self):
+        return_value = html.check_file_attributes(self.read_file,True)[0]
+        self.assertEqual(return_value, ['head', 'title', 'body', 'p', 'object', 'param'])
    
 if __name__ == '__main__':
     html = HTMLParser()
