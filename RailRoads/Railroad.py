@@ -7,18 +7,19 @@ class Railroads():
         try:
             isSuccess= True
             rail = Rails()
-            if len(file_name)>1:
+            if len(sys.argv)>1:
                 filename, isfile = rail.checkFile(file_name)
-                if isfile:
-                    reader,isRead = rail.readFile(filename,isfile)
-                    if isRead:
-                        header,isheader=rail.checkHeading(reader,isRead)
-                        if isheader:
-                            departure,arrival,cities,isTrainDetails = rail.getTrainInfo(reader,isheader)
             else:
                 print "You failed to provide filename as input on the command line!"
                 isSuccess= False
                 exit()
+
+            if isfile:
+                reader,isRead = rail.readFile(filename,isfile)
+                if isRead:
+                    header,isheader=rail.checkHeading(reader,isRead)
+                    if isheader:
+                        departure,arrival,cities,isTrainDetails = rail.getTrainInfo(reader,isheader)
         except Exception as exception:
             isSuccess= False
             template = "An exception of type readRailInfo Depature{0} occurred. Arguments:\n{1!r}"
@@ -162,19 +163,17 @@ class Railroads():
 
 if __name__ == "__main__":
     check="info's not correct.."
-            print """Hello, This application for check your train information.
+    print """Hello, This application for check your train information.
 Once you check Departure and arrival stations name from your input file.\n
 User provide Departue,Arrival stations & time like 0000 to 2400\n"""
-
     railroad =Railroads()
     isSuccess = True
     try:
         depts,arrivals,city,result=railroad.readRailInfo(sys.argv[1])
+            
     except Exception as exception:
         isSuccess = False
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(exception).__name__, exception.args)
-        print message
+        print "You failed to provide filename as input on the command line!"
         exit()
         
     if result:
