@@ -111,23 +111,21 @@ class HTMLParser():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         html = HTMLParser()
-        
         Filename, isfileformat = html.check_fileformat(sys.argv[1])
-
         if isfileformat:
             Data, isopen = html.open_file(Filename,isfileformat)
         else:
-            isfileformat = False
-
+            print "File is not open"
+            
         if isopen:
             Tags,isattributes = html.check_file_attributes(Data,isopen)
         else:
-            isopen = False
+            print "File Attributes list empty "
 
         if isattributes:
             html.display(isattributes)
         else:
-            isattributes = False
+            print "Error on display function"
     else:
         print "You provided two more filename as input on the command line!"
         
