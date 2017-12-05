@@ -6,9 +6,6 @@ class Railroads():
     def readRailInfo(self,file_name):
         try:
             isSuccess= True
-            print """Hello, This application for check your train information.
-Once you check Departure and arrival stations name from your input file.\n
-User provide Departue,Arrival stations & time like 0000 to 2400\n"""
             rail = Rails()
             if len(file_name)>1:
                 filename, isfile = rail.checkFile(file_name)
@@ -165,6 +162,10 @@ User provide Departue,Arrival stations & time like 0000 to 2400\n"""
 
 if __name__ == "__main__":
     check="info's not correct.."
+            print """Hello, This application for check your train information.
+Once you check Departure and arrival stations name from your input file.\n
+User provide Departue,Arrival stations & time like 0000 to 2400\n"""
+
     railroad =Railroads()
     isSuccess = True
     try:
