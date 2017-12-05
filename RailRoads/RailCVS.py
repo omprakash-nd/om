@@ -1,4 +1,3 @@
-
 import csv
 class Rails():
     def checkFile(self,filename):
