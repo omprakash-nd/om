@@ -6,8 +6,7 @@ class Rails():
             if filename.endswith('.csv'):
                 isSuccess = True
             else:
-                isSuccess = False
-                print "File format not correct"
+                isSuccess = False                
         except Exception as exception:
             isSuccess = False
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -76,3 +75,19 @@ class Rails():
             message = template.format(type(exception).__name__, exception.args)
             print message
         return list_departure,list_arrival,city,isSuccess
+
+    def getTrainList(self,filename):
+        file_name  = open(filename)
+        reader = csv.reader(file_name)
+        train =[]
+        for count,row in enumerate(reader):
+            if count > 0:
+                list1= [row[0],row[1],row[2],row[3],row[4]]
+                train.append(list1)
+        return train
+        
+
+
+
+        
+    
