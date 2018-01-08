@@ -35,17 +35,17 @@ class HTMLParser():
             print message
         return fileRead,isSuccess
 
-    def check_file_attributes(self,filename,isSuccess):
+    def check_file_attributes(self, filename, isSuccess):
         if isSuccess == True: 
             try: 
                 HtmlTags=[]
                 HtmlAttributes=[]
                 HtmlAttributeValues=[]
-                remove_params = re.sub(r'<!.+-->',r' ',filename)
+                remove_params = re.sub(r'<!.+-->', r' ', filename)
                 self.texts = remove_params
-                for tags in re.findall(r'<([^/][^>]*)>',self.texts):
+                for tags in re.findall(r'<([^/][^>]*)>', self.texts):
                     if ' ' in tags:
-                        for attribute in re.findall('([a-z]+)? *([a-z-]+)="([^"]+)',tags):
+                        for attribute in re.findall('([a-z]+)? *([a-z-]+)="([^"]+)', tags):
                             HtmlTags.append(attribute[0])
                             HtmlTags =filter(None, HtmlTags)
                             self.htmltags = HtmlTags
@@ -83,15 +83,15 @@ class HTMLParser():
                     self.display(isSuccess)
 
                 elif choice == 3:
-                    for attrib,values in map(None, self.htmlAttributes,self.htmlAttributeValues):
-                        print "%s = %s"%(attrib,values)
+                    for attrib, values in map(None, self.htmlAttributes, self.htmlAttributeValues):
+                        print "%s = %s"%(attrib, values)
                     self.display(isSuccess)
 
                 elif choice == 4:
                     attrib = str(raw_input('enter attribe ='))
                     if attrib in self.htmlAttributes:
                         index_value = self.htmlAttributes.index(attrib)
-                        print "Attribute value:",self.htmlAttributeValues[index_value]
+                        print "Attribute value:", self.htmlAttributeValues[index_value]
                     else:
                         print "Values doesn't match"
                     self.display(isSuccess)
@@ -113,12 +113,12 @@ if __name__ == '__main__':
         html = HTMLParser()
         Filename, isfileformat = html.check_fileformat(sys.argv[1])
         if isfileformat:
-            Data, isopen = html.open_file(Filename,isfileformat)
+            Data, isopen = html.open_file(Filename, isfileformat)
         else:
             print "File is not open"
             
         if isopen:
-            Tags,isattributes = html.check_file_attributes(Data,isopen)
+            Tags,isattributes = html.check_file_attributes(Data, isopen)
         else:
             print "File Attributes list empty "
 
