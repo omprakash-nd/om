@@ -1,17 +1,13 @@
-import sqlite3 as lite
-import sys
- 
-con = None
- 
-try:
-    con = lite.connect('test.db')
-    cur = con.cursor()    
-    cur.execute('SELECT SQLITE_VERSION()')
-    data = cur.fetchone()
-    print "SQLite version: %s" % data                
-except lite.Error, e:   
-    print "Error %s:" % e.args[0]
-    sys.exit(1)
-finally:    
-    if con:
-        con.close()
+def changetoint():
+    change_list = [10.0, 'chennai', 4.0, 'trichy', 11.0, 'chennai', 5.0, 'trichy', 4.0]
+    ls = []
+    
+    for j in change_list:
+        if isinstance(j, float):
+            ls.append(int(j))
+        else:
+            ls.append(j)
+    print ls  
+    
+changetoint()
+
